@@ -1,0 +1,16 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="userService" class="src/main/java/edu/yanchuk/spring/demo/interfaces/services/UserService">
+        <property name="userDAO" ref="userDAO" />
+    </bean>
+
+    <bean id="eventService" class="src/main/java/edu/yanchuk/spring/demo/interfaces/services/EventService">
+        <property name="eventDAO" ref="eventDAO" />
+    </bean>
+
+    <bean id="ticketService" class="src/main/java/edu/yanchuk/spring/demo/interfaces/services/TicketService">
+        <property name="ticketDAO" ref="ticketDAO" />
+    </bean>
+</beans>
