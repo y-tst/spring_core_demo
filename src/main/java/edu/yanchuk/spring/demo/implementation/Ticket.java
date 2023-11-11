@@ -20,4 +20,14 @@ public class Ticket {
         this.eventId = eventId;
         this.seat = seat;
     }
+
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", eventId=" + eventId +
+                ", seat=" + seat +
+                '}';
+    }
 }

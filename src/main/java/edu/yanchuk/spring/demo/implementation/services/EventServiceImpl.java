@@ -3,14 +3,15 @@ package edu.yanchuk.spring.demo.implementation.services;
 import edu.yanchuk.spring.demo.implementation.Event;
 import edu.yanchuk.spring.demo.interfaces.dao.EventDAO;
 import edu.yanchuk.spring.demo.interfaces.services.EventService;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public class EventServiceImpl implements EventService {
 
-    private EventDAO eventDAO; // Inject the EventDAO
+    private EventDAO eventDAO;
 
-    // Constructor-based injection
     public EventServiceImpl(EventDAO eventDAO) {
         this.eventDAO = eventDAO;
     }

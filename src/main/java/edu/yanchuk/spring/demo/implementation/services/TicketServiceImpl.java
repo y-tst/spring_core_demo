@@ -5,14 +5,15 @@ import edu.yanchuk.spring.demo.implementation.Ticket;
 import edu.yanchuk.spring.demo.implementation.User;
 import edu.yanchuk.spring.demo.interfaces.dao.TicketDAO;
 import edu.yanchuk.spring.demo.interfaces.services.TicketService;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public class TicketServiceImpl implements TicketService {
 
-    private TicketDAO ticketDAO; // Inject the TicketDAO
+    private TicketDAO ticketDAO;
 
-    // Constructor-based injection
     public TicketServiceImpl(TicketDAO ticketDAO) {
         this.ticketDAO = ticketDAO;
     }
