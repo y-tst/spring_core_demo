@@ -5,41 +5,40 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.yanchuk.spring.demo.interfaces.services.EventService;
 import edu.yanchuk.spring.demo.interfaces.services.TicketService;
 import edu.yanchuk.spring.demo.interfaces.services.UserService;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.stereotype.Component;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
-@Component
-public class Storage implements InitializingBean {
+public class Storage implements ApplicationContextAware {
+
+    private ApplicationContext context;
+
+    private static final Logger logger = LoggerFactory.getLogger(Storage.class);
     private String dataFilePath;
-    private Map<String, Object> dataMap = new ConcurrentHashMap<>();
 
-    ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-
-    UserService userService = context.getBean("userService", UserService.class);
-    EventService eventService = context.getBean("eventService", EventService.class);
-    TicketService ticketService = context.getBean("ticketService", TicketService.class);
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.context = applicationContext;
+    }
 
     public void setDataFilePath(String dataFilePath) {
         this.dataFilePath = dataFilePath;
     }
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    private ObjectMapper objectMapper = new ObjectMapper();
 
-    public Map<String, Object> getDataMap() {
-        return dataMap;
-    }
+    public void initStorage() throws Exception {
 
-    @Override
-    public void afterPropertiesSet() throws Exception {
+        UserService userService = context.getBean("userService", UserService.class);
+        EventService eventService = context.getBean("eventService", EventService.class);
+        TicketService ticketService = context.getBean("ticketService", TicketService.class);
+
         if (dataFilePath != null) {
             try {
                 Files.lines(Paths.get(dataFilePath)).forEach(line -> {
@@ -49,11 +48,29 @@ public class Storage implements InitializingBean {
                         String value = line.substring(colonIndex + 1).trim();
 
                         if (key.startsWith("user")) {
-                            processUser(value);
+                            try {
+                                User user = objectMapper.readValue(value, User.class);
+                                userService.createUser(user);
+                                logger.info("Processed User Data: " + user);
+                            } catch (JsonProcessingException e) {
+                                logger.info("Incorrect User data", e);
+                            }
                         } else if (key.startsWith("event")) {
-                            processEvent(value);
+                            try {
+                                Event event = objectMapper.readValue(value, Event.class);
+                                eventService.createEvent(event);
+                                logger.info("Processed Event Data: " + event);
+                            } catch (JsonProcessingException e) {
+                                logger.info("Incorrect Event data", e);
+                            }
                         } else if (key.startsWith("ticket")) {
-                            processTicket(value);
+                            try {
+                                Ticket ticket = objectMapper.readValue(value, Ticket.class);
+                                ticketService.bookTicket(ticket.getUserId(), ticket.getEventId(), ticket.getSeat());
+                                logger.info("Processed Ticket Data: " + ticket);
+                            } catch (JsonProcessingException e) {
+                                logger.info("Incorrect Ticket data", e);
+                            }
                         }
                     }
                 });
@@ -62,41 +79,4 @@ public class Storage implements InitializingBean {
             }
         }
     }
-
-    private void processUser(String value) {
-        // Handle user data
-        try {
-            User user = objectMapper.readValue(value, User.class);
-            userService.createUser(user);
-            dataMap.put("user " + user.getId(), user);
-            System.out.println("Processed User Data: " + user);
-        } catch (JsonProcessingException e) {
-            // Handle the exception
-        }
-    }
-
-    private void processEvent(String value) {
-        // Handle event data
-        try {
-            Event event = objectMapper.readValue(value, Event.class);
-            eventService.createEvent(event);
-            dataMap.put("event " + event.getId(), event);
-            System.out.println("Processed Event Data: " + event);
-        } catch (JsonProcessingException e) {
-            // Handle the exception
-        }
-    }
-
-    private void processTicket(String value) {
-        // Handle ticket data
-        try {
-            Ticket ticket = objectMapper.readValue(value, Ticket.class);
-            ticketService.bookTicket(ticket.getUserId(), ticket.getEventId(), ticket.getSeat());
-            dataMap.put("ticket " + ticket.getId(), ticket);
-            System.out.println("Processed Ticket Data: " + ticket);
-        } catch (JsonProcessingException e) {
-            // Handle the exception
-        }
-    }
-
 }

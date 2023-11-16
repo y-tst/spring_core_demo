@@ -2,48 +2,53 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:util="http://www.springframework.org/schema/util"
-       xsi:schemaLocation="
-           http://www.springframework.org/schema/beans
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/beans/spring-beans.xsd
            http://www.springframework.org/schema/context
-           http://www.springframework.org/schema/context/spring-context.xsd
-           http://www.springframework.org/schema/util
-           http://www.springframework.org/schema/util/spring-util.xsd">
+           http://www.springframework.org/schema/context/spring-context.xsd">
 
 
-    <context:component-scan base-package="edu.yanchuk.spring.demo" />
-    <context:property-placeholder location="classpath:application.properties" />
+    <!--    <context:component-scan base-package="edu.yanchuk.spring.demo" />-->
+    <context:property-placeholder location="classpath:application.properties"/>
 
-    <bean id="userService" class="edu.yanchuk.spring.demo.implementation.services.UserServiceImpl">
-        <constructor-arg ref="userDAO" />
+    <bean id="userDAO"
+          class="edu.yanchuk.spring.demo.implementation.dao.UserDAOImpl"/>
+
+    <bean id="eventDAO"
+          class="edu.yanchuk.spring.demo.implementation.dao.EventDAOImpl"/>
+
+    <bean id="ticketDAO"
+          class="edu.yanchuk.spring.demo.implementation.dao.TicketDAOImpl"/>
+
+    <bean id="userService"
+          class="edu.yanchuk.spring.demo.implementation.services.UserServiceImpl">
+        <constructor-arg ref="userDAO"/>
     </bean>
 
-    <bean id="eventService" class="edu.yanchuk.spring.demo.implementation.services.EventServiceImpl">
-        <constructor-arg ref="eventDAO" />
+    <bean id="eventService"
+          class="edu.yanchuk.spring.demo.implementation.services.EventServiceImpl">
+        <constructor-arg ref="eventDAO"/>
     </bean>
 
-    <bean id="ticketService" class="edu.yanchuk.spring.demo.implementation.services.TicketServiceImpl">
-        <constructor-arg ref="ticketDAO" />
+    <bean id="ticketService"
+          class="edu.yanchuk.spring.demo.implementation.services.TicketServiceImpl">
+        <constructor-arg ref="ticketDAO"/>
     </bean>
 
-    <bean id="userDAO" class="edu.yanchuk.spring.demo.implementation.dao.UserDAOImpl" />
-
-    <bean id="eventDAO" class="edu.yanchuk.spring.demo.implementation.dao.EventDAOImpl" />
-
-    <bean id="ticketDAO" class="edu.yanchuk.spring.demo.implementation.dao.TicketDAOImpl" />
-
-    <bean id="storage" class="edu.yanchuk.spring.demo.implementation.Storage">
-        <property name="dataFilePath" value="${data.file.path}" />
+    <bean id="storage"
+          class="edu.yanchuk.spring.demo.implementation.Storage"
+          init-method="initStorage">
+        <property name="dataFilePath"
+                  value="${data.file.path}"/>
     </bean>
 
 
     <!-- Define PropertyPlaceholderConfigurer for property file configuration -->
-    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="locations">
-            <list>
-                <value>classpath:application.properties</value>
-            </list>
-        </property>
-    </bean>
+    <!--    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">-->
+    <!--        <property name="locations">-->
+    <!--            <list>-->
+    <!--                <value>classpath:application.properties</value>-->
+    <!--            </list>-->
+    <!--        </property>-->
+    <!--    </bean>-->
 </beans>

@@ -2,14 +2,12 @@ package edu.yanchuk.spring.demo.implementation.dao;
 
 import edu.yanchuk.spring.demo.implementation.User;
 import edu.yanchuk.spring.demo.interfaces.dao.UserDAO;
-import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@Component
 public class UserDAOImpl implements UserDAO {
 
     private final Map<Long, User> userMap = new HashMap<>();

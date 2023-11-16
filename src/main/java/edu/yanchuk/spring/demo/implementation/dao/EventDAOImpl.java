@@ -2,14 +2,13 @@ package edu.yanchuk.spring.demo.implementation.dao;
 
 import edu.yanchuk.spring.demo.implementation.Event;
 import edu.yanchuk.spring.demo.interfaces.dao.EventDAO;
-import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@Component
+
 public class EventDAOImpl implements EventDAO {
 
     private final Map<Long, Event> eventMap = new HashMap<>();

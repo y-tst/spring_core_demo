@@ -3,11 +3,9 @@ package edu.yanchuk.spring.demo.implementation.services;
 import edu.yanchuk.spring.demo.implementation.User;
 import edu.yanchuk.spring.demo.interfaces.dao.UserDAO;
 import edu.yanchuk.spring.demo.interfaces.services.UserService;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component
 public class UserServiceImpl implements UserService {
 
     private UserDAO userDAO;

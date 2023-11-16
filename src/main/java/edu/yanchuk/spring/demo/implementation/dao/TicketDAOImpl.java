@@ -4,14 +4,12 @@ import edu.yanchuk.spring.demo.implementation.Event;
 import edu.yanchuk.spring.demo.implementation.Ticket;
 import edu.yanchuk.spring.demo.implementation.User;
 import edu.yanchuk.spring.demo.interfaces.dao.TicketDAO;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Component
 public class TicketDAOImpl implements TicketDAO {
 
     private final Map<Long, Ticket> ticketMap = new HashMap<>();
