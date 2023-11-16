@@ -1,13 +1,11 @@
 package edu.yanchuk.spring.demo;
 
-import edu.yanchuk.spring.demo.implementation.Storage;
 import edu.yanchuk.spring.demo.implementation.User;
 import edu.yanchuk.spring.demo.interfaces.services.EventService;
 import edu.yanchuk.spring.demo.interfaces.services.TicketService;
 import edu.yanchuk.spring.demo.interfaces.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class DemoApplication {
 
@@ -28,7 +26,7 @@ public class DemoApplication {
 
         User userToUpdate = new User(userToUpdateId, "Updated User Name", "updated_email@test.com");
         userService.updateUser(userToUpdate);
-        logger.info("User with ID %s is updated.", userToUpdateId);
+        logger.info("User with ID {} is updated.", userToUpdateId);
         userService.getAllUsers().forEach(System.out::println);
 
 
